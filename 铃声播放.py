@@ -53,24 +53,33 @@ def 音乐时长(path):
 def 播放音乐():
     os.startfile("D:\\编程\\PythonProject\\铃声管理\\筛选异常音乐.pyw")
     time.sleep(0.1)
-    fileList = os.listdir(r"D:\\FTP\\未放")
-    listLenth = len(fileList)
-    n = random.randint(0,listLenth)
-    musicPath = fileList[n]
-    print(musicPath)
-    oldMusicPath = "D:\\FTP\\未放\\" + musicPath
-    newMusicPath = "D:\\FTP\\已放\\" + musicPath
-    shutil.move(oldMusicPath,newMusicPath)
-    print("文件移动完成")
-    pt.say("即将播放")
-    pt.say(musicPath)
-    pt.runAndWait()
-    global a 
-    a = 音乐时长(newMusicPath)
-    print("单曲时长 =",a)
-    os.startfile(newMusicPath)
-    print("开始播放")
-    time.sleep(音乐时长(newMusicPath))
+    try:
+        fileList = os.listdir(r"D:\\FTP\\未放")
+        listLenth = len(fileList)
+        n = random.randint(0,listLenth)
+        musicPath = fileList[n]
+        print(musicPath)
+        oldMusicPath = "D:\\FTP\\未放\\" + musicPath
+        newMusicPath = "D:\\FTP\\已放\\" + musicPath
+        wrongMusicPath = "D:\\FTP\\异常\\" + musicPath
+        shutil.move(oldMusicPath,newMusicPath)
+        print("文件移动完成")
+        pt.say("即将播放")
+        pt.say(musicPath)
+        pt.runAndWait()
+        try:
+            global a 
+            a = 音乐时长(newMusicPath)
+            print("单曲时长 =",a)
+            os.startfile(newMusicPath)
+            print("开始播放")
+            time.sleep(音乐时长(newMusicPath))
+        except:
+            print("音乐播放异常:",musicPath)
+            shutil.move(newMusicPath,wrongMusicPath)
+    except:
+        print("音乐抽取异常")
+
 
 while 1:
     t = int(time.strftime("%H%M"))
